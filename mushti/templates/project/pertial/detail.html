@@ -1,0 +1,30 @@
+<form method="POST" hx-post="{{object.get_contrib_url}}">
+    <div id = "contributions_list21"> 
+        <div style="text-align: right;">
+        
+        
+            {% csrf_token %}
+            <input type="hidden" name="project_id" value={{object.id}} />
+
+            <div class="input-group  ">
+                <input type="text" name="amount" class="form-control mx-2" placeholder="amount"
+                    aria-label="Recipient's username" aria-describedby="button-addon2">
+
+                <input type="text" name="comments" class="form-control" placeholder="comments" />
+                <button class="btn btn-outline-primary"  hx-target = "#contributions_list21" hx-swap="innerHTML" 
+                hx-trigger = "/click" type="submit" id="button-addon2">Contribute</button>
+            </div>
+
+        </div>
+        {% if contrib_list.count %}
+        <ul style="text-align: left;">
+        
+                {% for contrib in contrib_list %}
+                    <li>{{contrib.created_date}} - {{contrib.amount}} by {{contrib.contributor}} - {{contrib.comments}}
+                    </li>
+                {% endfor %}
+        
+        </ul>
+        {% endif %}
+    </div>
+</form>

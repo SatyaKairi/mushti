@@ -1,0 +1,29 @@
+{% extends '../base.html' %}
+
+
+{% block container %}
+
+<div class="col-6 mx-auto ">
+    <h1>{{msg}}</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        
+        
+        <input class="btn btn-primary" value="Save" type="submit">
+    </form>
+    <br>
+    <form>
+        
+        <div id = "description_images">
+                {{form2.as_p}}
+        </div>
+    </form>
+
+    <div>
+        <button hx-get="{% url 'project:description_image_create_view' %}" hx-swap = "beforeend" hx-target = "#description_images">
+            Add Mode
+        </button>
+    </div>
+</div>
+{% endblock %}

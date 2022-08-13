@@ -1,0 +1,132 @@
+{% extends '../base.html' %}
+
+
+{% block container %}
+
+<div class = "row no-gutters">
+    <div class="card border-success col-sm-12 mx-auto col-lg-6">
+        <img class="card-img-top" src="{{ object.project_image.url }}" />
+        <div class="card-header bg-success text-white border-success">
+            <h3>{{ object.name}}</h3>
+        </div>
+        
+            <div class="card-body bg-light text-primary ">
+                <div>
+                    
+                </div>
+                <h4 class="card-title">
+                    {{object.description}}
+
+                </h4>
+                <hr>
+                <p>
+                    Pledged: ${{object.budget}},
+                </p>
+                <p>
+                    Funded: ${{object.get_funded_amount}}
+                </p>
+
+                <p>
+                    Achieved: {{object.get_funded_percentage}}%
+                </p>
+                <div>
+                    {% if request.user == object.user %}
+
+
+                    <a class="btn btn-primary" href="{{object.get_update_url}}">Edit</a>
+                    
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                        Delete
+                    </button>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer bg-light text-primary">
+                        <ul style="text-align: left;">
+                        
+                            {% for contrib in contrib_list %}
+                                <li>
+                                    <img src =  {{descriptions.image}} />
+                                    
+                                </li>
+                                <li>
+                                    <p>
+                                        {{descriptions.description}}
+                                    </p>
+                                </li>
+                            {% endfor %}
+                    
+                        </ul>    
+                </div>
+            </div>
+
+           
+    </div>
+    <div class = "card border-success col-sm-12 col-lg-6    ">
+        
+            <h4>Contributions</h4>
+            <form method="POST" hx-post="{{object.get_contrib_url}}">
+                <div id = "contributions_list21"> 
+                    <div style="text-align: right;">
+                        {% csrf_token %}
+                        <input type="hidden" name="project_id" value={{object.id}} />
+            
+                        <div class="input-group  ">
+                            <input type="text" name="amount" class="form-control mx-2" placeholder="amount"
+                                aria-label="Recipient's username" aria-describedby="button-addon2">
+            
+                            <input type="text" name="comments" class="form-control" placeholder="comments" />
+                            <button class="btn btn-outline-primary"  hx-target = "#contributions_list21" hx-swap="innerHTML" 
+                            hx-trigger = "/click" type="submit" id="button-addon2">Contribute</button>
+                        </div>
+            
+                    </div>
+                    {% if contrib_list.count %}
+                    <ul style="text-align: left;">
+                    
+                            {% for contrib in contrib_list %}
+                                <li>{{contrib.created_date}} - {{contrib.amount}} by {{contrib.contributor}} - {{contrib.comments}}
+                                </li>
+                            {% endfor %}
+                    
+                    </ul>
+                    {% endif %}
+                </div>
+            </form>
+        
+    </div>
+</div>
+
+<!-- Button trigger modal -->
+
+<form method="POST" action="{{object.get_deactivate_url}}">
+    {% csrf_token %}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete project?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Delete project {{object.name|lower}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-danger" value="Delete" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="project_id" value={{object.id}} />
+
+</form>
+
+
+
+
+{% endblock %}

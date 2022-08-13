@@ -1,0 +1,64 @@
+{% extends '../base.html' %}
+{% load project_list_extras %}
+
+{% block container %}
+<h1>Project List </h1>
+
+<div class="col-4">
+    <form>
+        <div class="input-group  mb-3">
+            <input type="text" name="q" hx-get = "." hx-target = "#search_results" hx-swap="innerHTML" hx-trigger = "keyup changed delay:500ms" class="form-control" placeholder="Search project"
+                aria-label="Recipient's username" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+        </div>
+    </form>
+</div>
+
+
+<div id = "search_results">
+    <ul>
+        {% for object in object_list %}
+        
+            <div class="card mb-3" style="max-width: 540px;" >
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src={{ object.project_image.url}} class="card-img" alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{object.name}}</h5>
+                            
+                            <p class="card-text">{{ object.description|formatdesc }} 
+                                <!-- <a href="{{ object.get_detail_url }}" >Read More</a></p> -->
+
+
+                            <p class="text-success">
+                                Pledged: ${{object.budget}}, ({{object.get_funded_percentage}}% Funded)
+                            </p>
+                            <a href=" {{ object.get_detail_url }} " class="btn btn-primary stretched-link">Check details</a>
+                            <p class="card-text"><small class="text-muted">Last updated {{object.updated_date}}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        
+        <!-- <li>
+            <h3 class="card-header"><a href="{{object.get_detail_url }}">{{object.name}} </a></h3>
+            <p>
+                Pledged: ${{object.budget}}, Funded: {{object.get_funded_percentage}}%
+            </p>
+        </li> -->
+
+        {% endfor %}
+    </ul>
+    
+</div>
+
+
+
+
+
+
+
+{% endblock %}
