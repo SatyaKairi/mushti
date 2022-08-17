@@ -83,6 +83,15 @@ class ProjectContribution(models.Model):
     modified_by = models.ForeignKey(User,on_delete=models.SET_NULL,null=True, blank = True, related_name="modified_user")
     is_active = models.BooleanField(default=True)
 
+    order_id = models.CharField(unique=True, max_length=100, null=True, blank=True)
+    checksum = models.CharField(max_length=100, null=True, blank=True)
+    
+    # not using this function for now
+    def save(self, *args, **kwargs):
+        if self.order_id is None and self.contributor and self.id:
+            self.order_id = self.contributor.strftime('PAY2ME%Y%m%dODR')
+        return super().save(*args, **kwargs)
+
 
 class ProjectImages(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
