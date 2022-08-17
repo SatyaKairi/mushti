@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'project',
     'account',
     'django_htmx',
+    'payments',
     
 ]
 
@@ -148,4 +149,11 @@ DEFAULT_FROM_EMAIL = 'YandexT1234@gmail.com'
 # SERVER_EMAIL = 'info@biome.consulting'
 EMAIL_USE_TLS = True
 ADMINS = [('John', 'info@biome.consulting'), ]
+
+
+PAYTM_MERCHANT_ID = 'xdbKIq13246193974859'
+PAYTM_SECRET_KEY = 'TqGqI3Zjbsl1dgsW'
+PAYTM_WEBSITE = 'WEBSTAGING'
+PAYTM_CHANNEL_ID = 'WEB'
+PAYTM_INDUSTRY_TYPE_ID = 'Retail'
 
